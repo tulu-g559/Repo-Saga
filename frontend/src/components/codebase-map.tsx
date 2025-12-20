@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 
 interface CodebaseMapProps {
   data: CodebaseMap;
+  onNodeSelect?: (nodeId: string) => void; // New Prop for interaction
 }
 
 // Updated Icons for a more RPG feel
@@ -29,7 +30,7 @@ const personaIcons: { [key: string]: React.ElementType } = {
   "Warrior": Sword,
 };
 
-const Node = ({ node, isDragon }: { node: MapNodeType; isDragon: boolean }) => {
+const Node = ({ node, isDragon, onNodeSelect }: { node: MapNodeType; isDragon: boolean; onNodeSelect?: (id: string) => void }) => {
   // Fallback to File icon, but try to match others
   let Icon = File;
   for (const key in personaIcons) {
@@ -43,6 +44,8 @@ const Node = ({ node, isDragon }: { node: MapNodeType; isDragon: boolean }) => {
   return (
     <Tooltip>
       <TooltipTrigger
+        // Added onClick and cursor-pointer
+        onClick={() => onNodeSelect?.(node.id)} 
         className="absolute transition-all duration-300 hover:scale-125 focus:outline-none focus:z-50 cursor-pointer group"
         style={{
           left: `calc(${node.x}% - ${node.size * 8}px)`,
@@ -80,13 +83,14 @@ const Node = ({ node, isDragon }: { node: MapNodeType; isDragon: boolean }) => {
             <span className="text-primary font-bold">Loot (Files):</span> {node.files.slice(0, 3).join(', ')}
             {node.files.length > 3 && ` +${node.files.length - 3} more`}
         </div>
+        <p className="text-[10px] text-primary/60 mt-2 text-center border-t border-primary/20 pt-1">Click to Consult Master</p>
       </TooltipContent>
     </Tooltip>
   );
 };
 
-export function CodebaseMap({ data }: CodebaseMapProps) {
-  const dragonNodeId = data.highlights.complex_dragon?.node_id;
+export function CodebaseMap({ data, onNodeSelect }: CodebaseMapProps) {
+  const dragonNodeId = data.highlights?.complex_dragon?.node_id;
 
   const getNodeCenter = (nodeId: string) => {
     const node = data.nodes.find(n => n.id === nodeId);
@@ -100,7 +104,7 @@ export function CodebaseMap({ data }: CodebaseMapProps) {
   return (
     <TooltipProvider>
       {/* Map Background: Dark grid with a subtle radial gradient */}
-      <div className="w-full aspect-video lg:aspect-[16/10] bg-[#0a0a0f] rounded-lg border-2 border-primary/30 relative overflow-hidden shadow-inner group">
+      <div className="w-full h-full bg-[#0a0a0f] rounded-lg border-2 border-primary/30 relative overflow-hidden shadow-inner group min-h-[400px]">
         
         {/* Grid Pattern Overlay */}
         <div className="absolute inset-0 opacity-10" 
@@ -142,13 +146,18 @@ export function CodebaseMap({ data }: CodebaseMapProps) {
 
         <div className="relative z-10 w-full h-full">
             {data.nodes.map(node => (
-            <Node key={node.id} node={node} isDragon={node.id === dragonNodeId} />
+            <Node 
+                key={node.id} 
+                node={node} 
+                isDragon={node.id === dragonNodeId} 
+                onNodeSelect={onNodeSelect} // Pass interaction down
+            />
             ))}
         </div>
 
         {/* Boss Encounter Notification */}
-        {data.highlights.complex_dragon && (
-            <div className="absolute bottom-4 right-4 z-20 animate-in slide-in-from-bottom-5 duration-700">
+        {data.highlights?.complex_dragon && (
+            <div className="absolute bottom-4 right-4 z-20 animate-in slide-in-from-bottom-5 duration-700 pointer-events-none">
                 <Card className="bg-destructive/10 border-destructive/50 backdrop-blur-md max-w-[250px]">
                     <CardHeader className="p-3 pb-1">
                         <CardTitle className="text-sm flex items-center gap-2 text-destructive font-headline">

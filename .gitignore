@@ -1,0 +1,124 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# ============ FRONTEND (Next.js/Node.js) ============
+
+# dependencies
+frontend/node_modules/
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+.next/
+/out/
+
+# production
+/build
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# vercel
+.vercel
+
+# genkit
+.genkit/*
+
+# firebase
+firebase-debug.log
+firestore-debug.log
+
+# ============ BACKEND (Python) ============
+
+# Python virtual environments
+server/venv/
+venv/
+env/
+ENV/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# ============ ENVIRONMENT & SECRETS ============
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env*.local
+*.pem
+
+# ============ IDE & EDITOR ============
+
+# VS Code
+.vscode/
+.vs/
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime
+.sublime-project
+.sublime-workspace
+
+# Vim/Neovim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# ============ OS SPECIFIC ============
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ============ LOGS & TEMPORARY FILES ============
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+lerna-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# ============ MISC ============
+
+# OS files
+.DS_Store
+Thumbs.db
